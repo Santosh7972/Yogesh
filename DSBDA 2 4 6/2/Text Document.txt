@@ -1,0 +1,59 @@
+import pandas as pd
+import statistics as st
+import numpy as np
+
+Psheet={'Roll_no':[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],'Name':['Onkar','Athrav','Manoj','Tanish','Prasanna','Om','Akash','Vinay','Darshan','Pawen','Ganesh','Advait','Arya','Arnav','Shradha','Nilesh',None],'Marks':[None,0,98,76,78,87,78,98,97,87,89,87,89,77,87,87,1000]}
+
+df=pd.DataFrame(Psheet)
+display(df)
+
+df.isnull()
+
+newdf=df.dropna()
+display(newdf)
+
+df['Name'].fillna('No name', inplace=True)
+display(df)
+
+mean=df['Marks'].mean()
+print(mean)
+
+df['Marks'].fillna(mean,inplace=True)
+display(df)
+
+df.describe()
+
+result = df.fillna(value = {'Onkar': 86 }, inplace=True)
+display(df)
+
+Exsheet={'Roll_no':[1,2,3,4,5,6,7,8,9,10],'Name':['Onkar','Athrav','Manoj','Tanish','Prasanna','Om',None,'Vinay',None,'Pawen'],'Marks':[None,78,98,76,78,87,78,98,97,1000]}
+
+newsheet=Exsheet
+
+display(newsheet)
+
+Q1=np.percentile(df['Marks'],25, interpolation='midpoint')
+Q3=np.percentile(df['Marks'],75, interpolation='midpoint')
+IQR=Q3-Q1
+
+upper=np.where(df['Marks']>=(Q3+1.5*IQR))
+upper
+
+print("upper bound:",upper)
+
+lower=np.where(df['Marks']<=(Q1-1.5*IQR))
+print("Lower bound:", lower)
+print(np.where(lower))
+
+df.drop(lower[0],inplace=True)
+df.drop(upper[0],inplace=True)
+
+print("new Shape:", df.shape)
+
+display(df)
+
+df['Marks']=df['Marks'].transform(lambda x:x+5)
+display(df)
+
+df['Marks']=df['Marks'].transform(lambda x:x-5)
+display(df)

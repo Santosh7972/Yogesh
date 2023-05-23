@@ -1,0 +1,51 @@
+import pandas as pd
+import numpy as np
+
+from sklearn.naive_bayes import GaussianNB
+
+from sklearn.metrics import confusion_matrix,accuracy_score,precision_score,recall_score
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.preprocessing import StandardScaler
+
+from sklearn.metrics import classification_report
+
+sheet = pd.read_csv("C:/Users/HP/Desktop/archive/Iris.csv")
+sheet
+
+sheet_x=sheet.iloc[:,[1,4]].values
+
+sheet_y=sheet.iloc[:,5].values
+
+x_train,x_test,y_train,y_test=train_test_split(sheet_x,sheet_y,test_size=0.2,random_state=2)
+
+sc=StandardScaler()
+
+x_train=sc.fit_transform(x_train)
+
+GNB=GaussianNB()
+
+GNB.fit(x_train,y_train)
+
+y_pred=GNB.predict(x_test)
+
+cm=confusion_matrix(y_test,y_pred)
+cm
+
+ac=accuracy_score(y_test,y_pred)
+ac
+
+report=classification_report(y_test,y_pred)
+print(report)
+
+error=1-ac
+error
+
+prec_score=precision_score(y_test,y_pred,average=None)
+prec_score
+
+rec_score=recall_score(y_test,y_pred,average=None)
+rec_score
+
+print("Accuracy Score :",ac)

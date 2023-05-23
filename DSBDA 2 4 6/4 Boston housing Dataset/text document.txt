@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+
+df = pd.read_csv("HousingData.csv")
+df
+
+df.describe()
+
+df_x = pd.read_csv("HousingData.csv",usecols=["RM","LSTAT"])
+
+df_y = pd.read_csv("HousingData.csv",usecols=["MEDV"])
+
+df_x.describe()
+
+df_x
+
+df_x.isnull()
+
+df_x.isnull().sum()
+
+x_mean = df_x['LSTAT'].mean()
+x_mean
+
+df_x.fillna(x_mean,inplace=True)
+df_x.isnull().sum()
+
+reg = linear_model.LinearRegression()
+x_train,x_test,y_train,y_test = train_test_split(df_x,df_y,test_size=0.20,random_state=2)
+
+reg.fit(x_train,y_train)
+print(reg.coef_)
+
+
+y_pred = reg.predict(x_test)
+y_pred
+
+y_test
+
+
+
+%matplotlib inline
+plt.xlabel("Y Prediction")
+plt.ylabel("Y Train")
+plt.xlim(0,50)
+plt.ylim(0,60)
+plt.scatter(y_pred,y_test,color = "red",marker="*")
